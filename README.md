@@ -24,8 +24,10 @@
 ####3. [点击进入我的博客](http://blog.csdn.net/rjgcszlc "尽人事看天意")
 
 ####4. 联系方式
-    QQ:1509815887
-    email:zlc921022@163.com
+
+   1.  QQ:1509815887
+   2.  email:zlc921022@163.com
 
 ####5.感谢
+
     如果觉得好就给我右上角star点一下吧, 如果觉得不好 欢迎批评指点 Thank you very much!
