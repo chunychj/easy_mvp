@@ -6,11 +6,11 @@
 
 ####1. 自定义View系列
 
-  1)[自定义View实战之开关按钮实现](https://blog.csdn.net/rjgcszlc/article/details/80977898) \n
-  2)[自定义View实战之仿土豆Loading实现](https://blog.csdn.net/rjgcszlc/article/details/80978184)
-  3)[自定义View实战之渐变,可拨动，带动画圆环控件实现](https://blog.csdn.net/rjgcszlc/article/details/80991937)
-  4)[自定义View实战之饼状图效果实现](https://blog.csdn.net/rjgcszlc/article/details/80992243)
-  5)[自定义View实战之仿QQ小红点实现](https://blog.csdn.net/rjgcszlc/article/details/80992634)
+  1. [自定义View实战之开关按钮实现](https://blog.csdn.net/rjgcszlc/article/details/80977898)
+  2. [自定义View实战之仿土豆Loading实现](https://blog.csdn.net/rjgcszlc/article/details/80978184)
+  3. [自定义View实战之渐变,可拨动，带动画圆环控件实现](https://blog.csdn.net/rjgcszlc/article/details/80991937)
+  4. [自定义View实战之饼状图效果实现](https://blog.csdn.net/rjgcszlc/article/details/80992243)
+  5. [自定义View实战之仿QQ小红点实现](https://blog.csdn.net/rjgcszlc/article/details/80992634)
   6)[自定义View实战之仿雷达蜘蛛网实现](https://blog.csdn.net/rjgcszlc/article/details/80992909)
   7)[自定义View之钟表盘实现](https://blog.csdn.net/rjgcszlc/article/details/80993684)
 
