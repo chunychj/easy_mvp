@@ -2,7 +2,7 @@
 自定义View系列源码
 ====
 效果图预览
-![](https://github.com/zlc921022/LookMvpProject/raw/master/image/beauty.png)
+![](https://github.com/zlc921022/CustomViewProject/raw/master/image)
 
 ###1. 自定义View系列
 
