@@ -1,6 +1,9 @@
 # CustomViewProject
 自定义View系列源码
 ====
+效果图预览
+
+![](https://github.com/zlc921022/CustomViewProject/raw/master/image/custom.gif)
 
 ###1. 自定义View系列
 
