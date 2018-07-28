@@ -43,6 +43,9 @@
         <attr name="mid_circle_color" format="color"/>
     </declare-styleable>
 
+    <declare-styleable name="PieChartView">
+        <attr name="isShowAnimation" format="boolean"/>
+    </declare-styleable>
 
     <declare-styleable name="MyLinearLayout">
         <attr name="orientation" format="string"/>

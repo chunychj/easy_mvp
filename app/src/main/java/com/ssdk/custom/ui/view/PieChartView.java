@@ -2,12 +2,15 @@ package com.ssdk.custom.ui.view;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -55,6 +58,10 @@ public class PieChartView extends View{
     private float mAnimatedValue;
     public final static int DURATION = 1000;
     private Rect mPercentRect;
+    //是否需要动画处理
+    private boolean mIsShowAnimation;
+    private RectF mRingRectF;
+    private DecimalFormat mDf;
 
     public PieChartView(Context context) {
         super(context);
@@ -63,6 +70,7 @@ public class PieChartView extends View{
     public PieChartView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initPaint();
+        initAttrs(attrs);
     }
 
     private void initPaint() {
@@ -87,6 +95,7 @@ public class PieChartView extends View{
         mTextPaint.setAntiAlias(true);
         mTextRect = new Rect();
         mPercentRect = new Rect();
+        mRingRectF = new RectF();
 
         //外圆环扇形
         mOutPaint = new Paint();
@@ -99,6 +108,14 @@ public class PieChartView extends View{
         mPath = new Path();
         mInPath = new Path();
         mOutPath = new Path();
+
+        mDf = new DecimalFormat("0");
+    }
+
+    private void initAttrs(AttributeSet attrs) {
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.PieChartView);
+        mIsShowAnimation = typedArray.getBoolean(R.styleable.PieChartView_isShowAnimation, false);
+        typedArray.recycle();
     }
 
     @Override
@@ -110,7 +127,9 @@ public class PieChartView extends View{
         mInRadius = dp2px(60);
         mOutRadius = dp2px(120);
 
-       // setProgressAnimation(DURATION);
+//        if(mIsShowAnimation) {
+//            setProgressAnimation(DURATION);
+//        }
     }
 
     @Override
@@ -136,15 +155,15 @@ public class PieChartView extends View{
         mTextPaint.setTextAlign(Paint.Align.CENTER);
         mTextPaint.getTextBounds(text,0,text.length(), mTextRect);
         int height = mTextRect.height();
-        canvas.drawText(text,0,0+height / 2,mTextPaint);
+        canvas.drawText(text,0,height / 2,mTextPaint);
     }
 
     //画透明度圆环
     private void drawInRing(Canvas canvas,float angle,float drawAngle){
 
-        RectF rectF = new RectF();
-        rectF.set(-mInRadius,-mInRadius,mInRadius,mInRadius);
-        canvas.drawArc(rectF,angle,drawAngle,false,mInPaint);
+//        RectF rectF = new RectF();
+        mRingRectF.set(-mInRadius,-mInRadius,mInRadius,mInRadius);
+        canvas.drawArc(mRingRectF,angle,drawAngle,false,mInPaint);
         //canvas.drawCircle(0,0,mInRadius + dp2px(5),mInPaint);
     }
 
@@ -158,29 +177,37 @@ public class PieChartView extends View{
 
         for (int i = 0; i < mPieChartNum; i++) {
             mStartAngle = (i == 0) ? 0 : mStartAngle + mScaleAngle;
-            if (Math.min(mDrawAngle, mAnimatedValue - mStartAngle) >= 0) {
-                float drawAngle = Math.min(mDrawAngle, mAnimatedValue - mStartAngle);
-                mOutPaint.setColor(mColors[i]);
-                mOutPath.lineTo(mOutRadius*(float) Math.cos(Math.toRadians(mStartAngle)),
-                        mOutRadius*(float) Math.sin(Math.toRadians(mStartAngle)));
-                mOutPath.arcTo(mOutRectF, mStartAngle, drawAngle);
-                // op(a,b,Path.Op.REVERSE_DIFFERENCE)  b-a的交集
-                mPath.op(mInPath,mOutPath, Path.Op.REVERSE_DIFFERENCE);
-                canvas.drawPath(mPath,mOutPaint);
-
-                //画透明度圆环
-                drawInRing(canvas,mStartAngle,drawAngle);
-
-                //画完一段圆弧再画百分比文字
-                if(drawAngle % mDrawAngle== 0) {
-                    drawPercentText(canvas, mStartAngle);
+            if(mIsShowAnimation) {
+                if (Math.min(mDrawAngle, mAnimatedValue - mStartAngle) >= 0) {
+                    float drawAngle = Math.min(mDrawAngle, mAnimatedValue - mStartAngle);
+                    drawPieChartRing(canvas, mColors[i], drawAngle);
                 }
+            }else{
+                drawPieChartRing(canvas, mColors[i], mDrawAngle);
             }
             mPath.reset();
             mOutPath.reset();
-
         }
         canvas.restore();
+    }
+
+    //绘制饼状图圆环
+    private void drawPieChartRing(Canvas canvas, int color, float drawAngle) {
+        mOutPaint.setColor(color);
+        mOutPath.lineTo(mOutRadius*(float) Math.cos(Math.toRadians(mStartAngle)),
+                mOutRadius*(float) Math.sin(Math.toRadians(mStartAngle)));
+        mOutPath.arcTo(mOutRectF, mStartAngle, drawAngle);
+        // op(a,b,Path.Op.REVERSE_DIFFERENCE)  b-a的交集
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            mPath.op(mInPath,mOutPath, Path.Op.REVERSE_DIFFERENCE);
+        }
+        canvas.drawPath(mPath,mOutPaint);
+        //画透明度圆环
+        drawInRing(canvas,mStartAngle,drawAngle);
+        //画完一段圆弧再画百分比文字
+        if(drawAngle % mDrawAngle== 0) {
+            drawPercentText(canvas, mStartAngle);
+        }
     }
 
     //画百分比文字
@@ -190,8 +217,7 @@ public class PieChartView extends View{
         //计算x,y的时候其实并不需要在不同象限单独计算  比如说 cos0 = 1  -cos（180-180） = cos 180 = -1
         float x = (float) (0.75 * mOutRadius * Math.cos(Math.toRadians(angle))) ;
         float y = (float) (0.75 * mOutRadius * Math.sin(Math.toRadians(angle))) ;
-        DecimalFormat df = new DecimalFormat("0");
-        String format = df.format(100 * 1.0f / mPieChartNum) + "%";
+        String format = mDf.format(100 * 1.0f / mPieChartNum) + "%";
         mTextPaint.getTextBounds(format,0,format.length(),mPercentRect);
         canvas.drawText(format,x,y + mPercentRect.height() / 2,mTextPaint);
     }
@@ -210,7 +236,7 @@ public class PieChartView extends View{
                 public void onAnimationUpdate(ValueAnimator animation) {
                     /**每次要绘制的圆弧角度**/
                     mAnimatedValue = (float) animation.getAnimatedValue();
-                    invalidate();
+                    postInvalidate();
                 }
             });
             mProgressAnimator.start();

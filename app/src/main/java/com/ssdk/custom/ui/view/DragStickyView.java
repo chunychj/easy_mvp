@@ -1,71 +1,85 @@
 package com.ssdk.custom.ui.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PixelFormat;
 import android.graphics.PointF;
-import android.graphics.drawable.AnimationDrawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.OvershootInterpolator;
-import android.widget.ImageView;
 
 import com.ssdk.custom.R;
+import com.ssdk.custom.utils.DensityUtil;
 import com.ssdk.custom.utils.GeometryUtil;
+
+import java.lang.ref.SoftReference;
+
+import static android.R.attr.x;
+import static android.R.attr.y;
 
 
 /**
  * Created by zlc on 2018/6/29.
  * 仿QQ小红点
  */
-
 public class DragStickyView extends View{
 
-
-    private static final String TAG = "DragStickyView";
+    //画笔对象
     private Paint mPaint;
-    private int mViewWidth;
-    private int mViewHeight;
+    //固定圆默认半径
+    private int mDefaultRadius;
     //固定的圆圆心坐标和半径
     private PointF mFixedPoint;
     private float mFixedRadius;
     //拖拽的圆圆心坐标和半径
     private PointF mDragPoint;
     private float mDragRadius;
-    //拖拽范围最大圆的圆心坐标和半径 最大拖拽范围
+    //最大拖拽范围
     private float mMaxDragRange;
-    private float mDragMaxRadius;
-    private PointF mDragMaxPoint;
     //控制点的坐标
     private PointF mControlPoint;
     //固定圆和拖拽圆切点坐标
     private PointF[] mFixedTangentPoint;
     private PointF[] mDragTangentPoint;
-    //触摸拖拽移动范围大小
-    private float mDragMoveRange;
-    //是否超出了范围
-    private boolean mIsOutRange = false;
-    //是否在超出范围外松手
-    private boolean mIsOutUp = false;
-    //动画中固定圆的最小半径
-    private float mMinFixedRadius;
-
+    //拖拽距离
+    private float mDragDistance;
+    //动画图片数组的index
+    private int mPopIndex;
+    //路径对象
     private Path mPath;
-    private WindowManager.LayoutParams mParams;
-    private WindowManager mWindowManager;
-    private Context mContext;
-    private LayoutInflater mLayoutInflater;
+    //缓存图片 用软引用 防止内存泄漏
+    private SoftReference<Bitmap> mSoftReference;
+//    private Bitmap mCacheBitmap;
+    //图片宽高
+    private int mWidth;
+    private int mHeight;
+    /**
+     * 当前红点状态
+     * 0 默认静止状态
+     * 1 拖拽状态
+     * 2 移动状态
+     * 3 消失状态
+     */
+    private static final int STATE_INIT = 0;
+    private static final int STATE_DRAG = 1;
+    private static final int STATE_MOVE = 2;
+    private static final int STATE_DISMISS = 3;
+    private int mState = STATE_INIT;
+
+    //动画消失图片数组
+    private int[] mPopRes = {
+            R.drawable.pop1, R.drawable.pop2, R.drawable.pop3,
+            R.drawable.pop4,  R.drawable.pop5};
+    private Bitmap[] mBitmaps;
 
     public DragStickyView(Context context) {
         this(context,null);
@@ -73,67 +87,37 @@ public class DragStickyView extends View{
 
     public DragStickyView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
-        mLayoutInflater = LayoutInflater.from(context);
         initPaint();
     }
 
     private void initPaint() {
+
         mPaint = new Paint();
         mPaint.setColor(Color.RED);
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeWidth(dip2px(2));
         mPaint.setAntiAlias(true);
+        mPaint.setDither(true);
 
-        mPath = new Path();
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-
-        //wrap_content
-        int width = dip2px(250);
-        int height =  dip2px(300);
-        width = widthMode == MeasureSpec.AT_MOST ? width : widthSize;
-        height = heightMode == MeasureSpec.AT_MOST ? height : heightSize;
-        setMeasuredDimension(width,height);
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        this.mViewWidth = w;
-        this.mViewHeight = h;
-
+        //固定圆 拖拽圆的圆心坐标
+        mFixedPoint = new PointF();
+        mDragPoint = new PointF();
         //初始化各个坐标点
-        float mCenterX = mViewWidth / 2;//dip2px(180);
-        float mCenterY = mViewHeight / 2;//dip2px(260);
-        mFixedPoint = new PointF(mCenterX,mCenterY);
-        mDragPoint = new PointF(mCenterX,mCenterY);
-        mDragMaxPoint = new PointF(mCenterX,mCenterY);
         mControlPoint = new PointF();
         mFixedTangentPoint = new PointF[2];
         mDragTangentPoint = new PointF[2];
 
         //初始化各个半径
+        mDefaultRadius = 30;
         mFixedRadius = dip2px(12);
         mDragRadius = dip2px(14);
-        mMinFixedRadius = dip2px(8);
-        mDragMaxRadius = dip2px(80);
-        mMaxDragRange = mDragMaxRadius;
+        mMaxDragRange = dip2px(100);
+        mPath = new Path();
 
-        //初始化 WindowManager和mParams  用于添加范围外爆炸图片 做动画处理
-        mWindowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-        mParams = new WindowManager.LayoutParams();
-        mParams.format = PixelFormat.TRANSLUCENT;
-        mParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        mParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        //初始化消失动画资源
+        mBitmaps = new Bitmap[mPopRes.length];
+        for (int i = 0; i < mBitmaps.length; i++) {
+            mBitmaps[i] = BitmapFactory.decodeResource(getResources(), mPopRes[i]);
+        }
     }
 
     @Override
@@ -142,29 +126,33 @@ public class DragStickyView extends View{
 
         canvas.save();
         mPaint.setStyle(Paint.Style.FILL);
-        //拖拽出了范围后将不再绘制连接部分和固定圆
-        if( !mIsOutRange) {
+        //拖拽范围之内才绘制连接部分和固定圆
+        if(isInsideRange() && mState == STATE_DRAG) {
             //画固定圆
-            float mFixedRadius = updateFixedCircleRadius();
             canvas.drawCircle(mFixedPoint.x, mFixedPoint.y, mFixedRadius, mPaint);
             drawBezier(canvas);
         }
-        drawDragCircle(canvas);
-        drawRangeCircle(canvas);
+        //绘制缓存的Bitmap
+        if (mSoftReference != null && mSoftReference.get() != null && mState != STATE_DISMISS) {
+            canvas.drawBitmap(mSoftReference.get(), mDragPoint.x - mWidth / 2, mDragPoint.y - mHeight / 2, mPaint);
+        }
+        //绘制小红点消失时的爆炸动画
+        if (mState == STATE_DISMISS && mPopIndex < mPopRes.length) {
+            canvas.drawBitmap(mBitmaps[mPopIndex], mDragPoint.x - mWidth / 2, mDragPoint.y - mHeight / 2, mPaint);
+        }
         canvas.restore();
     }
 
     //画贝塞尔曲线
     private void drawBezier(Canvas canvas){
 
-        //计算拖拽过程中固定圆的半径
-        float mFixedRadius = updateFixedCircleRadius();
         //控制点设置为两圆心点连线的中心坐标
-        mControlPoint.set((mFixedPoint.x + mDragPoint.x) / 2,(mFixedPoint.y + mDragPoint.y) / 2);
+        mControlPoint.set((mFixedPoint.x + mDragPoint.x) / 2.0f,(mFixedPoint.y + mDragPoint.y) / 2.0f);
         //计算斜率 和 切点坐标
         float dy = mDragPoint.y - mFixedPoint.y;
         float dx = mDragPoint.x - mFixedPoint.x;
         //k1 * k2 = -1 斜率k = (y0 - y1)/(x0 - x1)
+        mDragRadius = Math.min(mWidth, mHeight) / 2;
         if(dx == 0){
             mFixedTangentPoint = GeometryUtil.getIntersectionPoints(mFixedPoint,mFixedRadius,0f);
             mDragTangentPoint = GeometryUtil.getIntersectionPoints(mDragPoint, mDragRadius,0f);
@@ -174,7 +162,6 @@ public class DragStickyView extends View{
             mFixedTangentPoint = GeometryUtil.getIntersectionPoints(mFixedPoint,mFixedRadius,k2);
             mDragTangentPoint = GeometryUtil.getIntersectionPoints(mDragPoint, mDragRadius,k2);
         }
-
         //需要重置 否则线会重叠
         mPath.reset();
         //移动起点到固定圆的外切点
@@ -194,112 +181,50 @@ public class DragStickyView extends View{
     //画拖拽圆
     private void drawDragCircle(Canvas canvas){
         //当在范围外松手的时候不再绘制拖拽圆
-        if( !mIsOutUp) {
+        if(mState == STATE_DRAG && isInsideRange()) {
             canvas.drawCircle(mDragPoint.x, mDragPoint.y, mDragRadius, mPaint);
         }
     }
 
-    //画范围控制圆
-    private void drawRangeCircle(Canvas canvas) {
-        mPaint.setStrokeWidth(dip2px(1));
-        mPaint.setStyle(Paint.Style.STROKE);
-        //画范围控制圆
-        canvas.drawCircle(mDragMaxPoint.x, mDragMaxPoint.y, mDragMaxRadius,mPaint);
+    //是不是在拖拽范围内
+    private boolean isInsideRange(){
+        return mDragDistance <= mMaxDragRange;
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                getParent().requestDisallowInterceptTouchEvent(true);
-                mIsOutRange = false;
-                float startX = event.getX();
-                float startY = event.getY();
-                updateDragCenterXY(startX,startY);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                float moveX = event.getX();
-                float moveY = event.getY();
-                mDragMoveRange = drawDistance();
-                //超出了拖拽的最大范围
-                if(mDragMoveRange > mMaxDragRange){
-                    mIsOutRange = true;
-                }else{
-                    //mIsOutRange=false  因为移出一次后就算它移出过了
-                    mIsOutUp = false;
-                }
-                updateDragCenterXY(moveX,moveY);
-                break;
-            case MotionEvent.ACTION_UP:
-                getParent().requestDisallowInterceptTouchEvent(false);
-                //防止误操作
-                mDragMoveRange = drawDistance();
-                touchUp(event.getX(),event.getY());
-                break;
-        }
-        return true;
-    }
-
-    /**
-     * 手指松手事件处理
-     */
-    private void touchUp(float touchX,float touchY){
-        //拖拽已经超出了最大范围
-        if(mIsOutRange){
-            //手指抬起/松手时是否停留在最大范围内
-            //松手在范围外
-            if(mDragMoveRange > mMaxDragRange){
-                mIsOutUp = true;
-                outRangePlayAnimation(touchX,touchY);
+    //手指抬起事件处理
+    public void touchUp(){
+        if(isInsideRange()){
+            if(mState == STATE_DRAG){
+                //拖拽一直在范围内
+                startResetAnimation();
+            }else if(mState == STATE_MOVE){
+                //拖拽出了范围，松手在范围内 因为要回到原位置
+                // 所以拖拽圆的圆心坐标用固定圆的圆心坐标代替
+                mDragPoint.set(mFixedPoint.x,mFixedPoint.y);
                 invalidate();
-            }else{
-                mIsOutUp = false;
-                //松手在范围内 因为要回到原位置 所以拖拽圆的圆心坐标用固定圆的圆心坐标代替
-                updateDragCenterXY(mFixedPoint.x,mFixedPoint.y);
+                clearDragView();
             }
-        }else{
-            //拖拽一直在范围内
-            resilienceAnimation();
+        }else if(mState == STATE_MOVE){
+            //拖拽范围之外 消失动画处理
+            mState = STATE_DISMISS;
+            startPopAnimation();
         }
-    }
-
-    /**
-     * 更新拖拽圆的圆心坐标
-     * @param x
-     * @param y
-     */
-    private void updateDragCenterXY(float x, float y){
-        mDragPoint.set(x,y);
-        invalidate();
     }
 
     //拖拽的距离大小
-    private float drawDistance(){
+    public float drawDistance(){
         return GeometryUtil.getDistanceBetween2Points(mFixedPoint, mDragPoint);
     }
 
-    /**
-     * 计算拖拽过程中固定圆的半径
-     */
-    private float updateFixedCircleRadius(){
-        float distance = (float) Math.sqrt(Math.pow(mFixedPoint.x - mDragPoint.x,2) +
-               Math.pow(mFixedPoint.y - mDragPoint.y,2));
-        distance = Math.min(distance,mMaxDragRange);
-        float percent = distance * 1.0f / mMaxDragRange;
-        return mFixedRadius + (mMinFixedRadius - mFixedRadius) * percent;
-    }
-
-    /**
-     *  移动的时候一直在范围内，最后在范围内做松手回弹动画处理
-     */
-    private void resilienceAnimation() {
+    //移动的时候一直在范围内，最后在范围内做松手回弹动画处理
+    private void startResetAnimation() {
 
         final PointF startPoint = new PointF(mDragPoint.x,
                 mDragPoint.y);
         final PointF endPoint = new PointF(mFixedPoint.x,
                 mFixedPoint.y);
         ValueAnimator animator = ValueAnimator.ofFloat(1.0f);
-        animator.setInterpolator(new OvershootInterpolator(4.0f));
+        animator.setInterpolator(new OvershootInterpolator(5.0f));
         animator.setDuration(500);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -307,72 +232,105 @@ public class DragStickyView extends View{
                 float fraction = animation.getAnimatedFraction();
                 PointF byPercent = GeometryUtil.getPointByPercent(
                         startPoint, endPoint, fraction);
-                updateDragCenterXY(byPercent.x, byPercent.y);
+                mDragPoint.set(byPercent.x,byPercent.y);
+                invalidate();
+            }
+        });
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                clearDragView();
+                if (mQQBezierView.mOnDragListener != null) {
+                    mQQBezierView.mOnDragListener.onDrag();
+                }
             }
         });
         animator.start();
     }
 
-    /**
-     * 超出范围 松手动画处理
-     */
-    private void outRangePlayAnimation(float touchX,float touchY){
-
-//        final  ImageView imageView = new ImageView(getContext());
-//        imageView.setImageResource(R.drawable.out_anim);
-//        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-//        final AnimationDrawable animDrawable = (AnimationDrawable) imageView.getDrawable();
-//        // 这里得到的是其真实的大小，因为此时还得不到其测量值
-//        final int imgWidth = imageView.getDrawable().getIntrinsicWidth();
-//        final int imgHeight = imageView.getDrawable().getIntrinsicHeight();
-        final ImageView imageView = (ImageView) mLayoutInflater.inflate(R.layout.drag_img, null, false);
-        imageView.setImageResource(R.drawable.out_anim);
-        final AnimationDrawable animDrawable = (AnimationDrawable) imageView.getDrawable();
-        mParams.gravity = Gravity.LEFT | Gravity.TOP;
-        mParams.x= (int) mDragPoint.x - imageView.getWidth() / 2;
-        mParams.y= (int) mDragPoint.y - imageView.getHeight() / 2;
-
-
-        if(imageView.getParent() == null) {
-            mWindowManager.addView(imageView, mParams);
-        }else{
-            Log.e(TAG,"已经有小姐姐了，你还要几个！");
-        }
-        if(!animDrawable.isRunning()) {
-            animDrawable.start();
-        }else{
-            animDrawable.stop();
-            animDrawable.start();
-        }
-
-        long duration = getAnimationDuration(animDrawable);
-        imageView.postDelayed(new Runnable() {
+    // 爆炸动画
+    private void startPopAnimation() {
+        ValueAnimator animator = ValueAnimator.ofInt(0, mPopRes.length);
+        animator.setDuration(500);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void run() {
-                animDrawable.stop();
-                imageView.clearAnimation();
-                mWindowManager.removeViewImmediate(imageView);
-                //爆炸动画之后复位 为了多次演示 实际项目中下面两行代码需要注释掉
-                mIsOutUp = false;
-                updateDragCenterXY(mFixedPoint.x,mFixedPoint.y);
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mPopIndex = (int) animation.getAnimatedValue();
+                invalidate();
             }
-        },duration);
+        });
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                if(mQQBezierView.mOnDragListener != null){
+                    mQQBezierView.mOnDragListener.onDismiss();
+                }
+                if(mSoftReference != null) {
+                    mSoftReference.clear();
+                }
+            }
+        });
+        animator.start();
     }
 
-    /**
-     * 得到帧动画的执行时间
-     */
-    private long getAnimationDuration(AnimationDrawable animationDrawable) {
-        long duration = 0;
-        for(int i=0; i < animationDrawable.getNumberOfFrames(); i++){
-            duration += animationDrawable.getDuration(i);
+    //设置固定圆和拖拽圆的圆心坐标
+    public void setStickyPoint(int fixedX, int fixedY, float dragX, float dragY) {
+        mFixedPoint.set(fixedX,fixedY);
+        mDragPoint.set(dragX,dragY);
+        //计算拖拽的距离
+        mDragDistance = drawDistance();
+        if(isInsideRange()){
+            //如果拖拽距离小于规定最大距离，则固定的圆应该越来越小，这样看着才符合逻辑
+            float distance = mDefaultRadius - mDragDistance / 10;
+            mFixedRadius = distance < 10 ? 10 : distance;
+            mState = STATE_DRAG;
+        }else{
+            mState = STATE_INIT;
         }
-        return duration;
+    }
+
+    //更新拖拽圆的圆心坐标
+    public void updateDragCenterXY(float x, float y){
+        mDragPoint.set(x,y);
+        //实时计算圆心距
+        mDragDistance = drawDistance();
+        if(mState == STATE_DRAG){
+            if(isInsideRange()){
+                float distance = mDefaultRadius - mDragDistance / 10;
+                mFixedRadius = distance < 10 ? 10 : distance;
+            }else{
+                mState = STATE_MOVE;
+                if(mQQBezierView.mOnDragListener != null){
+                    mQQBezierView.mOnDragListener.onMove();
+                }
+            }
+        }
+        invalidate();
+    }
+
+    //设置缓存图片
+    public void setCacheBitmap(Bitmap bitmap) {
+       // this.mCacheBitmap = bitmap;
+        mSoftReference = new SoftReference<>(bitmap);
+        this.mWidth = bitmap.getWidth();
+        this.mHeight = bitmap.getHeight();
+    }
+
+    private QQBezierView mQQBezierView;
+    public void setQQBezierView(QQBezierView QQBezierView) {
+        mQQBezierView = QQBezierView;
+    }
+
+    //清除当前View
+    private void clearDragView() {
+        ViewGroup viewGroup = (ViewGroup) getParent();
+        viewGroup.removeView(this);
+        mQQBezierView.setVisibility(VISIBLE);
     }
 
     public int dip2px(float dpValue) {
-        final float scale = getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
+        return DensityUtil.dp2px(getContext(),dpValue);
     }
-
 }
