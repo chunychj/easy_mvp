@@ -14,11 +14,12 @@ import com.ssdk.custom.ui.fragment.ViewGroupFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author zlc
+ */
 public class MainActivity extends AppCompatActivity {
 
     private RadioGroup mRgMain;
-    private RadioButton mRbView;
-    private RadioButton mRbViewgroup;
     private ViewFragment mFragment1;
     private ViewGroupFragment mFragment2;
     private List<Fragment> mFragments;
@@ -52,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
 
         mRgMain = (RadioGroup) findViewById(R.id.rg_main);
-        mRbView = (RadioButton) findViewById(R.id.rb_view);
-        mRbViewgroup = (RadioButton) findViewById(R.id.rb_viewgroup);
 
     }
 
