@@ -3,7 +3,7 @@
 ====
 ## 1. 效果图预览
 
-![](https://github.com/zlc921022/CustomViewProject/raw/master/image/custom.gif)
+![](https://github.com/zlc921022/CustomViewProject/raw/master/image/image.gif)
 
 ## 2. 自定义View系列
 
