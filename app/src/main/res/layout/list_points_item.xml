@@ -15,7 +15,7 @@
         android:layout_marginLeft="20dp"/>
 
 
-    <com.ssdk.custom.ui.view.QQBezierView
+    <com.cc.cdesign.cwidget.QQBezierView
         android:id="@+id/qq_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

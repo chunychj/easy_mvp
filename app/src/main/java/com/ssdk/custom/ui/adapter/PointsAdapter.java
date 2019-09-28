@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.cc.cdesign.cwidget.QQBezierView;
 import com.ssdk.custom.R;
 import com.ssdk.custom.ui.bean.PointBean;
-import com.ssdk.custom.ui.view.QQBezierView;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.ssdk.custom.ui.fragment;
 
+import com.cc.cdesign.cwidget.PieChartView;
 import com.ssdk.custom.R;
-import com.ssdk.custom.ui.view.PieChartView;
 
 /**
  * Created by zlc on 2018/7/16.

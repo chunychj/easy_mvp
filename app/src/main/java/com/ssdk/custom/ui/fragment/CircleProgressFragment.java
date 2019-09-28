@@ -1,9 +1,7 @@
 package com.ssdk.custom.ui.fragment;
 
-import android.view.View;
-
+import com.cc.cdesign.cwidget.CircleRingProgress;
 import com.ssdk.custom.R;
-import com.ssdk.custom.ui.view.CircleRingProgress;
 
 /**
  * Created by zlc on 2018/7/16.

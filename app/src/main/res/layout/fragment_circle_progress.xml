@@ -5,7 +5,7 @@
               android:layout_height="match_parent">
 
 
-    <com.ssdk.custom.ui.view.CircleRingProgress
+    <com.cc.cdesign.cwidget.CircleRingProgress
         android:id="@+id/ring_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

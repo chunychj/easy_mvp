@@ -1,10 +1,7 @@
 package com.ssdk.custom.ui.fragment;
 
-import android.view.MotionEvent;
-import android.view.View;
-
 import com.ssdk.custom.R;
-import com.ssdk.custom.ui.view.viewgroup.RangeSeekBar;
+import com.cc.cdesign.cwidget.viewgroup.RangeSeekBar;
 
 /**
  * Created by zlc on 2018/7/16.

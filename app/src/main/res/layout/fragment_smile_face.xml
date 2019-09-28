@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <com.ssdk.custom.ui.view.SmileFaceView
+    <com.cc.cdesign.cwidget.SmileFaceView
         android:id="@+id/smile_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
