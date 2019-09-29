@@ -1,0 +1,54 @@
+/**
+ * 在主项目的根目录下创建config.gradle文件
+ * 在这里单独处理统一依赖问题
+ * 在各模块目录的build.gradle中进行引入
+ */
+
+ext {
+
+    android = [
+            compileSdkVersion: 27,
+            buildToolsVersion: "28.0.2",
+            minSdkVersion    : 18,
+            targetSdkVersion : 27
+    ]
+
+    //Android 原生库--------------------------------------------------------------------------------
+    supportVersion = "27.1.1"
+    constraintLayout = "1.1.2"
+    multidex = "1.0.2"
+
+    supportDependencies = [
+        supoortV4        : "com.android.support:appcompat-v4:${supportVersion}",
+        supoortV7        : "com.android.support:appcompat-v7:${supportVersion}",
+        recyclerview     : "com.android.support:recyclerview-v7:${supportVersion}",
+        design           : "com.android.support:design:${supportVersion}",
+        constraintLayout : "com.android.support.constraint:constraint-layout:${constraintLayout}",
+        multidex         : "com.android.suport:multidex:${multidex}"
+    ]
+
+    //三方依赖库-------------------------------------------------------------------------------------
+    rxJava = "2.2.8"
+    rxAndroid = "2.1.1"
+    retrofit = "2.6.2"
+    baseRecyclerViewAdapterHelper = "2.9.34"
+    glide = "4.7.1"
+    photoview = "2.3.0"
+    smartRefreshLayout = "1.1.0"
+    smartRefreshHeader = "1.1.0"
+    autoDispose = "1.4.0"
+    gson = "2.8.5"
+    eventbus = "3.1.1"
+    timber = ""
+    arouter = "1.5.0"
+    butterknife = "10.2.0"
+    luban = "1.1.8"
+    pickerview = "4.1.8"
+    autosize = "1.1.2"
+
+    thirdDependencies = [
+            rxJava = "io.reactivex.rxjava2:rxjava:${rxJava}",
+            rxAndroid = "io.reactivex.rxjava2:rxandroid:${rxAndroid}",
+            retrofit = "com.squareup.retrofit2:retrofit:${retrofit}",
+    ]
+}
