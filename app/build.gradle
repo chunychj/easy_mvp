@@ -1,16 +1,27 @@
 apply plugin: 'com.android.application'
 
+def supportDependencies = rootProject.ext.supportDependencies
+def thirdDependencies = rootProject.ext.thirdDependencies
+def config = rootProject.ext.android
+
 android {
-    compileSdkVersion 27
-    buildToolsVersion "28.0.2"
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
     defaultConfig {
         applicationId "com.ssdk.custom"
-        minSdkVersion 18
-        targetSdkVersion 27
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.javaVersion
+        targetCompatibility rootProject.ext.javaVersion
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -20,14 +31,39 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testImplementation 'junit:junit:4.12'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.android.support:design:27.1.1'
+
+    implementation supportDependencies.supoortV7
+    implementation supportDependencies.constraintLayout
+    implementation supportDependencies.multidex
+    implementation supportDependencies.design
+
+    implementation thirdDependencies.rxJava
+    implementation thirdDependencies.rxAndroid
+    implementation thirdDependencies.retrofit
+    implementation thirdDependencies.baseAdapterHelper
+    implementation thirdDependencies.glide
+    implementation thirdDependencies.smartRefreshLayout
+    implementation thirdDependencies.smartRefreshHeader
+    implementation thirdDependencies.autoDispose
+    implementation thirdDependencies.autoDisposeAndroid
+    implementation thirdDependencies.autoDisposeArchcomponents
+    implementation thirdDependencies.gson
+    implementation thirdDependencies.eventbus
+    implementation thirdDependencies.timber
+    implementation thirdDependencies.luban
+    implementation thirdDependencies.pickerView
+    implementation thirdDependencies.autoSize
+//    implementation thirdDependencies.lifecycle
+//    implementation thirdDependencies.viewmodel
+//    implementation thirdDependencies.livedata
+    implementation thirdDependencies.butterknife
+    annotationProcessor thirdDependencies.butterKnifeCompiler
+    // implementation thirdDependencies.mvpArms
 
     implementation project(":base")
     implementation project(":basestyle")

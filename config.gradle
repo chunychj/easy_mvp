@@ -6,6 +6,8 @@
 
 ext {
 
+    javaVersion = JavaVersion.VERSION_1_8
+
     android = [
             compileSdkVersion: 27,
             buildToolsVersion: "28.0.2",
@@ -19,12 +21,12 @@ ext {
     def multidex = "1.0.2"
 
     supportDependencies = [
-        supoortV4        : "com.android.support:appcompat-v4:${supportVersion}",
-        supoortV7        : "com.android.support:appcompat-v7:${supportVersion}",
-        recyclerview     : "com.android.support:recyclerview-v7:${supportVersion}",
-        design           : "com.android.support:design:${supportVersion}",
-        constraintLayout : "com.android.support.constraint:constraint-layout:${constraintLayout}",
-        multidex         : "com.android.suport:multidex:${multidex}"
+            supoortV4       : "com.android.support:appcompat-v4:${supportVersion}",
+            supoortV7       : "com.android.support:appcompat-v7:${supportVersion}",
+            recyclerview    : "com.android.support:recyclerview-v7:${supportVersion}",
+            design          : "com.android.support:design:${supportVersion}",
+            constraintLayout: "com.android.support.constraint:constraint-layout:${constraintLayout}",
+            multidex        : "com.android.support:multidex:${multidex}"
     ]
 
     //三方依赖库-------------------------------------------------------------------------------------
@@ -42,7 +44,7 @@ ext {
     def eventbus = "3.1.1"
     def timber = "4.5.1"
     def arouter = "1.5.0"
-    def butterknife = "10.2.0"
+    def butterknife = "8.8.0"
     def luban = "1.1.8"
     def pickerView = "4.1.8"
     def autoSize = "1.1.2"
@@ -53,46 +55,46 @@ ext {
     thirdDependencies = [
 
             //  网络加载
-            rxJava              : "io.reactivex.rxjava2:rxjava:${rxJava}",
-            rxAndroid           : "io.reactivex.rxjava2:rxandroid:${rxAndroid}",
-            retrofit            : "com.squareup.retrofit2:retrofit:${retrofit}",
+            rxJava                   : "io.reactivex.rxjava2:rxjava:${rxJava}",
+            rxAndroid                : "io.reactivex.rxjava2:rxandroid:${rxAndroid}",
+            retrofit                 : "com.squareup.retrofit2:retrofit:${retrofit}",
             //  recyclerView通用适配器
-            baseAdapterHelper   : "com.github.CymChad:BaseRecyclerViewAdapterHelper:${baseAdapterHelper}",
+            baseAdapterHelper        : "com.github.CymChad:BaseRecyclerViewAdapterHelper:${baseAdapterHelper}",
             //  图片加载
-            glide               : "com.github.bumptech.glide:glide:${glide}",
+            glide                    : "com.github.bumptech.glide:glide:${glide}",
             //  gson
-            gson                : "com.google.code.gson:gson:${gson}",
+            gson                     : "com.google.code.gson:gson:${gson}",
             //  事件通信
-            eventbus            : "org.greenrobot:eventbus:${eventbus}",
+            eventbus                 : "org.greenrobot:eventbus:${eventbus}",
             //  日志管理
-            timber              : "com.jakewharton.timber:timber:${timber}",
+            timber                   : "com.jakewharton.timber:timber:${timber}",
             //  路由 https://github.com/alibaba/ARouter
-            arouter             : "com.alibaba:arouter-api:${arouter}",
-            arouterCompiler     : "com.alibaba:arouter-compiler:${arouter}",
+            arouter                  : "com.alibaba:arouter-api:${arouter}",
+            arouterCompiler          : "com.alibaba:arouter-compiler:${arouter}",
             //  注解框架
-            butterknife         : "com.jakewharton:butterknife:${butterknife}",
-            butterKnifeCompiler : "com.jakewharton:butterknife-compiler:${butterknife}",
+            butterknife              : "com.jakewharton:butterknife:${butterknife}",
+            butterKnifeCompiler      : "com.jakewharton:butterknife-compiler:${butterknife}",
             //  图片压缩框架
-            luban               : "top.zibin:Luban:${luban}",
+            luban                    : "top.zibin:Luban:${luban}",
             //  时间选择器
-            pickerView          : "com.contrarywind:Android-PickerView:${pickerView}",
+            pickerView               : "com.contrarywind:Android-PickerView:${pickerView}",
             //  今日头条适配方案
-            autoSize            : "me.jessyan:autosize:${autoSize}",
+            autoSize                 : "me.jessyan:autosize:${autoSize}",
             //  图片查看 九宫格控件
-            photoView           : "com.github.chrisbanes:PhotoView:${photoView}",
+            photoView                : "com.github.chrisbanes:PhotoView:${photoView}",
             //  mvp 开源框架
-            mvpArms             : "me.jessyan:arms:${mvpArms}",
+            mvpArms                  : "me.jessyan:arms:${mvpArms}",
             //  lifeCycle 管理activity和fragment声明周期
-            lifecycle           : "android.arch.lifecycle:lifecycle-extensions:${lifecycle}",
-            viewmodel           : "android.arch.lifecycle:viewmodel:${lifecycle}",
-            livedata            : "android.arch.lifecycle:livedata:${lifecycle}",
+            lifecycle                : "android.arch.lifecycle:lifecycle-extensions:${lifecycle}",
+            viewmodel                : "android.arch.lifecycle:viewmodel:${lifecycle}",
+            livedata                 : "android.arch.lifecycle:livedata:${lifecycle}",
             //  刷新框架
-            smartRefreshLayout  : "com.scwang.smartrefresh:SmartRefreshLayout:${smartRefreshLayout}",
-            smartRefreshHeader  : "com.scwang.smartrefresh:SmartRefreshHeader:${smartRefreshHeader}",
+            smartRefreshLayout       : "com.scwang.smartrefresh:SmartRefreshLayout:${smartRefreshLayout}",
+            smartRefreshHeader       : "com.scwang.smartrefresh:SmartRefreshHeader:${smartRefreshHeader}",
             //  https://github.com/uber/AutoDispose  避免rxJava内存泄漏
-            autoDispose         : "com.uber.autodispose:autodispose:${autoDispose}",
-            autoDisposeAndroid  : "com.uber.autodispose:autodispose-android:${autoDispose}",
-            autoDisposeArchcomponents : "com.uber.autodispose:autodispose-android-archcomponents:${autoDispose}",
+            autoDispose              : "com.uber.autodispose:autodispose:${autoDispose}",
+            autoDisposeAndroid       : "com.uber.autodispose:autodispose-android:${autoDispose}",
+            autoDisposeArchcomponents: "com.uber.autodispose:autodispose-android-archcomponents:${autoDispose}",
 
     ]
 }
