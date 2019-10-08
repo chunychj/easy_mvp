@@ -13,7 +13,6 @@ android {
         targetSdkVersion config.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
 
@@ -32,10 +31,12 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     testImplementation 'junit:junit:4.12'
+
+    implementation project(":base")
+    implementation project(":basestyle")
+    implementation project(":data")
+    implementation project(":widget")
 
     implementation supportDependencies.supoortV7
     implementation supportDependencies.constraintLayout
@@ -58,15 +59,10 @@ dependencies {
     implementation thirdDependencies.luban
     implementation thirdDependencies.pickerView
     implementation thirdDependencies.autoSize
-//    implementation thirdDependencies.lifecycle
-//    implementation thirdDependencies.viewmodel
-//    implementation thirdDependencies.livedata
+    implementation thirdDependencies.lifecycle
+    implementation thirdDependencies.viewmodel
+    implementation thirdDependencies.livedata
     implementation thirdDependencies.butterknife
     annotationProcessor thirdDependencies.butterKnifeCompiler
-    // implementation thirdDependencies.mvpArms
-
-    implementation project(":base")
-    implementation project(":basestyle")
-    implementation project(":data")
-    implementation project(":widget")
+//    implementation thirdDependencies.mvpArms
 }

@@ -1,6 +1,7 @@
 package com.cc.cdesign.base.ui;
 
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * @类描述：

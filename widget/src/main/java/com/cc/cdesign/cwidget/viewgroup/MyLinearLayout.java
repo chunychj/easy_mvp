@@ -30,7 +30,7 @@ public class MyLinearLayout extends ViewGroup {
         super(context, attrs);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MyLinearLayout);
-        mOrientation = typedArray.getString(R.styleable.MyLinearLayout_orientation);
+        mOrientation = typedArray.getString(R.styleable.MyLinearLayout_ll_orientation);
         if (TextUtils.isEmpty(mOrientation)) {
             mOrientation = "vertical";
         }

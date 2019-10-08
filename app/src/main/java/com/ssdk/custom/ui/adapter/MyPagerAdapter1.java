@@ -1,16 +1,17 @@
 package com.ssdk.custom.ui.adapter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 /**
  * Created by zlc on 2018/7/16.
  */
 
-public class MyPagerAdapter1 extends FragmentStatePagerAdapter{
+public class MyPagerAdapter1 extends FragmentStatePagerAdapter {
 
     private List<Fragment> mFragments;
     private String[] mTitles;

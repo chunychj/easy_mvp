@@ -90,7 +90,7 @@ public class PointsAdapter extends BaseAdapter {
 
         public ViewHolder(View v){
             mTvData = v.findViewById(R.id.tv_data);
-            mQqPoint = v.findViewById(qq_point);
+            mQqPoint = v.findViewById(R.id.qq_point);
         }
     }
 }

@@ -48,7 +48,7 @@
     </declare-styleable>
 
     <declare-styleable name="MyLinearLayout">
-        <attr name="orientation" format="string"/>
+        <attr name="ll_orientation" format="string"/>
     </declare-styleable>
 
     <declare-styleable name="MyRelativeLayout">

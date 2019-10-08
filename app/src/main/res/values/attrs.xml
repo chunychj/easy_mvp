@@ -48,7 +48,7 @@
     </declare-styleable>
 
     <declare-styleable name="MyLinearLayout">
-        <attr name="orientation" format="string"/>
+        <attr name="android:orientation"/>
     </declare-styleable>
 
     <declare-styleable name="MyRelativeLayout">
