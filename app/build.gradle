@@ -13,7 +13,9 @@ android {
         targetSdkVersion config.targetSdkVersion
         versionCode 1
         versionName "1.0"
+
         multiDexEnabled true
+        flavorDimensions "dev"
     }
 
     compileOptions {
@@ -21,10 +23,46 @@ android {
         targetCompatibility rootProject.ext.javaVersion
     }
 
+    signingConfigs{
+        debug {
+
+        }
+        release{
+
+        }
+    }
+
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    productFlavors {
+
+        def app_name = "CCCDesign"
+
+        vdev {
+            applicationId "com.ssdk.custom.dev"
+            resValue "string","app_name",app_name + "Dev"
+            dimension "dev"
+        }
+
+        vtest {
+            applicationId "com.ssdk.custom.test"
+            resValue "string","app_name",app_name + "Test"
+            dimension "dev"
+        }
+
+        vonline {
+            applicationId "com.ssdk.custom"
+            resValue "string","app_name",app_name
+            dimension "dev"
         }
     }
 }
