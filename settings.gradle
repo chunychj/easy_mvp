@@ -1,1 +1,1 @@
-include ':app', ':base', ':data', ':widget', ':basestyle', ':fastble'
+include ':app', ':base', ':data', ':widget', ':basestyle', ':fastble', ':aacmodule'
