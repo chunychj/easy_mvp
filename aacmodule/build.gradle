@@ -38,5 +38,7 @@ dependencies {
     implementation 'androidx.paging:paging-rxjava2:2.1.0'
     implementation 'androidx.room:room-runtime:2.2.0'
     annotationProcessor 'androidx.room:room-compiler:2.2.0'
+    implementation thirdDependencies.rxJava
+    implementation thirdDependencies.rxAndroid
     testImplementation 'junit:junit:4.12'
 }
