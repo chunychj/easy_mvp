@@ -76,33 +76,22 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
     @SuppressLint("CheckResult")
     private void select() {
-        Observable.create(new ObservableOnSubscribe<List<User>>() {
-            @Override
-            public void subscribe(ObservableEmitter<List<User>> emitter) throws Exception {
-                UserDao userDao = AppDataBase.getInstance(RoomActivity.this).userDao();
-                List<User> users = userDao.selectAll();
-                if(users != null) {
-                    emitter.onNext(users);
-                    emitter.onComplete();
-                }else{
-                    emitter.onError(new Throwable("对象为空"));
-                }
+        Observable.create((ObservableOnSubscribe<List<User>>) emitter -> {
+            UserDao userDao = AppDataBase.getInstance(RoomActivity.this).userDao();
+            List<User> users = userDao.selectAll();
+            if(users != null) {
+                emitter.onNext(users);
+                emitter.onComplete();
+            }else{
+                emitter.onError(new Throwable("对象为空"));
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<User>>() {
-                    @Override
-                    public void accept(List<User> users) throws Exception {
-                        for (User user:users) {
-                            Log.e("select", "id=" + user.id + " ;name=" + user.userName);
-                        }
+                .subscribe(users -> {
+                    for (User user:users) {
+                        Log.e("select", "id=" + user.id + " ;name=" + user.userName);
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.e("accept error", throwable.getMessage());
-                    }
-                });
+                }, throwable -> Log.e("accept error", throwable.getMessage()));
     }
 
     @SuppressLint("CheckResult")
@@ -110,50 +99,28 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
         final User user = new User();
         user.id = 0;
         user.userName = "cc";
-        Observable.create(new ObservableOnSubscribe<User>() {
-            @Override
-            public void subscribe(ObservableEmitter<User> emitter) throws Exception {
-                UserDao userDao = AppDataBase.getInstance(RoomActivity.this).userDao();
-                userDao.update(user);
-            }
+        Observable.create((ObservableOnSubscribe<User>) emitter -> {
+            UserDao userDao = AppDataBase.getInstance(RoomActivity.this).userDao();
+            userDao.update(user);
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<User>() {
-                    @Override
-                    public void accept(User user) throws Exception {
+                .subscribe(user1 -> {
 
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.e("accept error", throwable.getMessage());
-                    }
-                });
+                }, throwable -> Log.e("accept error", throwable.getMessage()));
     }
 
     @SuppressLint("CheckResult")
     private void delete() {
         final User user = new User();
         user.id = 1;
-        Observable.create(new ObservableOnSubscribe<User>() {
-            @Override
-            public void subscribe(ObservableEmitter<User> emitter) throws Exception {
-                UserDao userDao = AppDataBase.getInstance(RoomActivity.this).userDao();
-                userDao.delete(user);
-            }
+        Observable.create((ObservableOnSubscribe<User>) emitter -> {
+            UserDao userDao = AppDataBase.getInstance(RoomActivity.this).userDao();
+            userDao.delete(user);
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<User>() {
-                    @Override
-                    public void accept(User user) throws Exception {
+                .subscribe(user1 -> {
 
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.e("accept error", throwable.getMessage());
-                    }
-                });
+                }, throwable -> Log.e("accept error", throwable.getMessage()));
     }
 
     @SuppressLint("CheckResult")
@@ -165,24 +132,13 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
             user.userName = "zlc:" + i;
             users.add(user);
         }
-        Observable.create(new ObservableOnSubscribe<User>() {
-            @Override
-            public void subscribe(ObservableEmitter<User> emitter) throws Exception {
-                UserDao userDao = AppDataBase.getInstance(RoomActivity.this).userDao();
-                userDao.insertAll(users);
-            }
+        Observable.create((ObservableOnSubscribe<User>) emitter -> {
+            UserDao userDao = AppDataBase.getInstance(RoomActivity.this).userDao();
+            userDao.insertAll(users);
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<User>() {
-                    @Override
-                    public void accept(User user) throws Exception {
+                .subscribe(user -> {
 
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.e("accept error", throwable.getMessage());
-                    }
-                });
+                }, throwable -> Log.e("accept error", throwable.getMessage()));
     }
 }

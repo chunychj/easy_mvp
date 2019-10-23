@@ -29,6 +29,10 @@ public class LifeCyclerActivity extends AppCompatActivity {
 
         mTv = findViewById(R.id.tv);
 
+        liveDataAndViewModel();
+    }
+
+    private void liveDataAndViewModel() {
         final MyViewModel model = ViewModelProviders.of(this).get(MyViewModel.class);
         model.getLiveData().observe(this,myObserver);
         LiveData<Integer> data = Transformations.map(model.getLiveData(), new Function<String, Integer>() {

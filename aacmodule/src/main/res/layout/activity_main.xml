@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
+    <Button
         android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,12 +14,31 @@
         android:layout_centerInParent="true" />
 
 
-    <TextView
+    <Button
         android:id="@+id/room"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="room"
         android:layout_below="@id/tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"/>
+
+
+    <Button
+        android:id="@+id/con_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="约束布局"
+        android:layout_below="@id/room"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="navigation"
+        android:layout_below="@id/con_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"/>
 
