@@ -123,13 +123,14 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
                 }, throwable -> Log.e("accept error", throwable.getMessage()));
     }
 
+    private int index = 4;
     @SuppressLint("CheckResult")
     private void add() {
         final List<User> users = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             final User user = new User();
-            user.id = i;
-            user.userName = "zlc:" + i;
+            user.id = index + i;
+            user.userName = "zlc:" + index + i;
             users.add(user);
         }
         Observable.create((ObservableOnSubscribe<User>) emitter -> {

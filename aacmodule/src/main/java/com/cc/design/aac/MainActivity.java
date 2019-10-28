@@ -15,12 +15,11 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.room).setOnClickListener(v -> startActivity(RoomActivity.class));
         findViewById(R.id.con_layout).setOnClickListener(v -> startActivity(ConstraintLayoutActivity.class));
         findViewById(R.id.navigation).setOnClickListener(v -> startActivity(NavigationActivity.class));
+        findViewById(R.id.paging).setOnClickListener(v -> startActivity(PagingActivity.class));
     }
 
     private void startActivity(Class clazz) {
         Intent intent = new Intent(MainActivity.this, clazz);
         startActivity(intent);
     }
-
-
 }

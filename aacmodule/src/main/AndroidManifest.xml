@@ -21,8 +21,10 @@
         <activity android:name=".LifeCyclerActivity" />
         <activity android:name=".RoomActivity" />
         <activity android:name=".ConstraintLayoutActivity" />
-        <activity android:name=".NavigationActivity"
-            android:theme="@style/AppTheme"/>
+        <activity android:name=".PagingActivity" />
+        <activity
+            android:name=".NavigationActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

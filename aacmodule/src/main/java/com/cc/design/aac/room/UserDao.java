@@ -1,5 +1,6 @@
 package com.cc.design.aac.room;
 
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -33,4 +34,7 @@ public interface UserDao {
 
     @Query("SELECT * FROM user")
     List<User> selectAll();
+
+    @Query("SELECT * FROM user")
+    DataSource.Factory<Integer,User> getAll();
 }
