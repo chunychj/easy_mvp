@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 def supportDependencies = rootProject.ext.supportDependencies
+def thirdDependencies = rootProject.ext.thirdDependencies
 def config = rootProject.ext.android
 
 android {
@@ -20,12 +21,24 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility rootProject.ext.javaVersion
+        targetCompatibility rootProject.ext.javaVersion
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation project(":basestyle")
+
     implementation supportDependencies.supoortV7
     implementation supportDependencies.constraintLayout
     implementation supportDependencies.design
+
+    implementation thirdDependencies.baseAdapterHelper
+    implementation thirdDependencies.smartRefreshLayout
+    implementation thirdDependencies.smartRefreshHeader
+    implementation thirdDependencies.autoDispose
+    implementation thirdDependencies.autoDisposeArchcomponents
 }
