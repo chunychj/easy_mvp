@@ -6,10 +6,10 @@
 项目框架采用RxJava + Retrofit + AndroidX + JetPack + MVP + 模块化方式搭建，屏幕适配方面采用的是今日头条的适配方案，注释详尽，是一个适合新手入门，老手快速开发的框架。
 
 ## 2. 模块介绍
-a. base模块：主要是针对activity，fragment，presenter，view接口的封装，同时针对rv适配器和下拉刷新框架做了封装，并且提供了大量工具类。
-b. data模块：主要是对接口请求request，接口响应response，api提供类，okhttp，retrofit，拦截器，接口回调等配合搭建的网络框架。
-c. fastble模块：主要是针对蓝牙操作封装的一个快速开发框架。
-d. widget模块：是我自定义View的模块。
+     a. base模块：主要是针对activity，fragment，presenter，view接口的封装，同时针对rv适配器和下拉刷新框架做了封装，并且提供了大量工具类。
+     b. data模块：主要是对接口请求request，接口响应response，api提供类，okhttp，retrofit，拦截器，接口回调等配合搭建的网络框架。
+     c. fastble模块：主要是针对蓝牙操作封装的一个快速开发框架。
+     d. widget模块：是我自定义View的模块。
 
 ## 3. 项目使用
      a. 定义一个Activity继承AbsBaseActivity,实现getPresenter和getLayoutId方法，前者是创建Presenter对象，后者是加载布局
@@ -47,7 +47,7 @@ public class TestActivity extends AbsBaseActivity<TestPresenter> implements ITes
 
 
 ```
-  b.创建一个presenter，里面定义网络请求方法，定义为TestPresenter
+  b. 创建一个presenter，里面定义网络请求方法，定义为TestPresenter
 
 ```
 public class TestPresenter extends AbsBasePresenter<ITestView> {
@@ -85,7 +85,9 @@ public class TestPresenter extends AbsBasePresenter<ITestView> {
 }
 
 ```
-  c.  一个网络请求就是这么简单，不需要考虑页面生命周期，因为已经通过JetPack组件处理了，不需要考虑rxjava内存泄漏问题，因为通过AutoDispose处理了，不需要每次都处理loading的显示和关闭，因为通过JetPack的liveData对象已经在AbsBaseActivity里面统一处理了loading的显示和关闭，使用起来非常简洁方便。
+```
+ c.  一个网络请求就是这么简单，不需要考虑页面生命周期，因为已经通过JetPack组件处理了，不需要考虑rxjava内存泄漏问题，因为通过AutoDispose处理了，不需要每次都处理loading的显示和关闭，因为通过JetPack的liveData对象已经在AbsBaseActivity里面统一处理了loading的显示和关闭，使用起来非常简洁方便。
+```
 
 ## 4. 项目设计技术点和开源库
 ```
@@ -129,8 +131,7 @@ b. 自定义ViewGroup系列
 
 ## 7. 联系方式
 
-   1.  QQ:1509815887
-   2.  email:zlc921022@163.com
+   QQ:1509815887
 
 ## 8. 感谢
 
