@@ -6,10 +6,10 @@
 项目框架采用RxJava + Retrofit + AndroidX + JetPack + MVP + 模块化方式搭建，屏幕适配方面采用的是今日头条的适配方案，注释详尽，是一个适合新手入门，老手快速开发的框架。
 
 ## 2. 模块介绍
-    a. base模块：主要是针对activity，fragment，presenter，view接口的封装，同时针对rv适配器和下拉刷新框架做了封装，并且提供了大量工具类。
-    b. data模块：主要是对接口请求request，接口响应response，api提供类，okhttp，retrofit，拦截器，接口回调等配合搭建的网络框架。
-    c. fastble模块：主要是针对蓝牙操作封装的一个快速开发框架。
-    d. widget模块：是我自定义View的模块。
+a. base模块：主要是针对activity，fragment，presenter，view接口的封装，同时针对rv适配器和下拉刷新框架做了封装，并且提供了大量工具类。
+b. data模块：主要是对接口请求request，接口响应response，api提供类，okhttp，retrofit，拦截器，接口回调等配合搭建的网络框架。
+c. fastble模块：主要是针对蓝牙操作封装的一个快速开发框架。
+d. widget模块：是我自定义View的模块。
 
 ## 3. 项目使用
      a. 定义一个Activity继承AbsBaseActivity,实现getPresenter和getLayoutId方法，前者是创建Presenter对象，后者是加载布局
