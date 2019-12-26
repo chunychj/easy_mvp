@@ -1,4 +1,4 @@
-# CCPCDesign项目
+# easy-mvp项目
 widget模块下包含全部自定义View系列源码
 ====
 ## 1. 效果图预览
