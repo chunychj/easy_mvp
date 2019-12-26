@@ -97,7 +97,8 @@ c.  一个网络请求就是这么简单，不需要考虑页面生命周期，�
 - rxandroid
 - retrofit
 - okhttp
-- jetpack
+- lifecycle
+- livedata
 - glide
 - eventbus
 - butterknife
@@ -105,6 +106,10 @@ c.  一个网络请求就是这么简单，不需要考虑页面生命周期，�
 - autodispose
 - rxpermissions
 - BaseRecyclerViewAdapterHelper   
+- timber
+- banner
+- kotlin
+- statusbarutil
 
 ```
 
