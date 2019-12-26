@@ -85,13 +85,13 @@ public class TestPresenter extends AbsBasePresenter<ITestView> {
 }
 
 ```
-```
- c.  一个网络请求就是这么简单，不需要考虑页面生命周期，因为已经通过JetPack组件处理了，不需要考虑rxjava内存泄漏问题，因为通过AutoDispose处理了，不需要每次都处理loading的显示和关闭，因为通过JetPack的liveData对象已经在AbsBaseActivity里面统一处理了loading的显示和关闭，使用起来非常简洁方便。
-```
+
+c.  一个网络请求就是这么简单，不需要考虑页面生命周期，因为已经通过JetPack组件处理了，不需要考虑rxjava内存泄漏问题，因为通过AutoDispose处理了，不需要每次都处理loading的显示和关闭，因为通过JetPack的liveData对象已经在AbsBaseActivity里面统一处理了loading的显示和关闭，使用起来非常简洁方便。
+
 
 ## 4. 项目设计技术点和开源库
 ```
-模块化开发
+- 模块化开发
 - mvp
 - rxjava
 - rxandroid
@@ -131,7 +131,7 @@ b. 自定义ViewGroup系列
 
 ## 7. 联系方式
 
-   QQ:1509815887
+    QQ:1509815887
 
 ## 8. 感谢
 
