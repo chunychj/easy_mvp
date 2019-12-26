@@ -5,7 +5,7 @@
               android:layout_height="match_parent">
 
 
-    <com.cc.cdesign.cwidget.viewgroup.FlowLayout
+    <com.eflagcomm.emvp.widget.viewgroup.FlowLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
@@ -37,7 +37,7 @@
         <TextView
             style="@style/text_flag_01"
             android:text="I think i can" />
-    </com.cc.cdesign.cwidget.viewgroup.FlowLayout>
+    </com.eflagcomm.emvp.widget.viewgroup.FlowLayout>
 
 
 </LinearLayout>

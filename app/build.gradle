@@ -8,14 +8,14 @@ android {
     compileSdkVersion config.compileSdkVersion
     buildToolsVersion config.buildToolsVersion
     defaultConfig {
-        applicationId "com.ssdk.custom"
+        applicationId "com.eflagcomm.emvp"
         minSdkVersion config.minSdkVersion
         targetSdkVersion config.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
         multiDexEnabled true
-        flavorDimensions "dev"
+        flavorDimensions "mvp"
     }
 
     compileOptions {
@@ -23,46 +23,29 @@ android {
         targetCompatibility rootProject.ext.javaVersion
     }
 
-    signingConfigs{
-        debug {
-
-        }
-        release{
-
-        }
-    }
-
     buildTypes {
         debug {
-            signingConfig signingConfigs.debug
+            minifyEnabled false
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
     }
 
     productFlavors {
 
-        def app_name = "CCCDesign"
+        def app_name = "esay-mvp"
 
         vdev {
-            applicationId "com.ssdk.custom.dev"
-            resValue "string","app_name",app_name + "Dev"
-            dimension "dev"
+            resValue "string", "app_name", app_name
+            dimension "mvp"
         }
 
         vtest {
-            applicationId "com.ssdk.custom.test"
-            resValue "string","app_name",app_name + "Test"
-            dimension "dev"
-        }
-
-        vonline {
-            applicationId "com.ssdk.custom"
-            resValue "string","app_name",app_name
-            dimension "dev"
+            applicationId "com.eflagcomm.emvp.test"
+            resValue "string", "app_name", app_name + "Test"
+            dimension "mvp"
         }
     }
 }
@@ -72,19 +55,19 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     implementation project(":base")
-    implementation project(":basestyle")
     implementation project(":data")
     implementation project(":widget")
+    implementation project(":fastble")
 
-    implementation supportDependencies.supoortV7
+    implementation supportDependencies.supportAppcompat
     implementation supportDependencies.constraintLayout
     implementation supportDependencies.multidex
-    implementation supportDependencies.design
+    implementation supportDependencies.suppoutDesign
 
     implementation thirdDependencies.rxJava
     implementation thirdDependencies.rxAndroid
     implementation thirdDependencies.retrofit
-    implementation thirdDependencies.baseAdapterHelper
+    implementation thirdDependencies.baseRecyclerViewAdapter
     implementation thirdDependencies.glide
     implementation thirdDependencies.smartRefreshLayout
     implementation thirdDependencies.smartRefreshHeader
@@ -102,5 +85,4 @@ dependencies {
     implementation thirdDependencies.livedata
     implementation thirdDependencies.butterknife
     annotationProcessor thirdDependencies.butterKnifeCompiler
-//    implementation thirdDependencies.mvpArms
 }

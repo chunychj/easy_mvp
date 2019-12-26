@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.cc.cdesign.cwidget.viewgroup.MyLinearLayout
+<com.eflagcomm.emvp.widget.viewgroup.MyLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
@@ -61,4 +61,4 @@
         android:gravity="center"/>
 
 
-</com.cc.cdesign.cwidget.viewgroup.MyLinearLayout>
+</com.eflagcomm.emvp.widget.viewgroup.MyLinearLayout>

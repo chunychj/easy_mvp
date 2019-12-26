@@ -1,18 +1,20 @@
 apply plugin: 'com.android.library'
+def config = rootProject.ext.android
+// 扩展库
+def supportDependencies = rootProject.ext.supportDependencies
+// 第三库
+def thirdDependencies = rootProject.ext.thirdDependencies
 
 android {
-    compileSdkVersion 28
 
-
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 18
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
+        minSdkVersion config.minSdkVersion
+    //    targetSdkVersion config.targetSdkVersion
+        versionCode config.versionCode
+        versionName config.versionName
     }
 
     buildTypes {
@@ -22,11 +24,29 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility rootProject.ext.javaVersion
+        targetCompatibility rootProject.ext.javaVersion
+    }
+
+    lintOptions {
+        checkAllWarnings false
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-//    implementation 'com.android.support:appcompat-v7:28.0.0'
-    testImplementation 'junit:junit:4.12'
+    implementation project(":base")
+    implementation  supportDependencies.supportV4
+    implementation supportDependencies.supportAppcompat
+    implementation  thirdDependencies.eventbus
+
+    implementation thirdDependencies.rxJava
+    implementation thirdDependencies.rxAndroid
+    implementation thirdDependencies.retrofit
+    implementation thirdDependencies.rxJavaAdapter
+    implementation thirdDependencies.retrofitConverterGson
 }

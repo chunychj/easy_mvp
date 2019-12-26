@@ -1,1 +1,6 @@
-include ':app', ':base', ':data', ':widget', ':basestyle', ':fastble', ':aacmodule'
+include ':app',
+        ':base',
+        ':data',
+        ':widget',
+        ":fastble"
+        ':jetpack_study'

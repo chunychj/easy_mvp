@@ -26,8 +26,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(":base")
-
-    implementation supportDependencies.supoortV7
+    implementation supportDependencies.supportAppcompat
     implementation supportDependencies.constraintLayout
-    implementation supportDependencies.design
+    implementation supportDependencies.suppoutDesign
 }
