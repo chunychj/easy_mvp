@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.rocago.nuojia.ble">
+    package="com.eflagcomm.emvp.ble">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -8,7 +8,7 @@
 
     <application>
         <service
-            android:name=".bluetooth.service.BluetoothLeService"
+            android:name="com.eflagcomm.emvp.ble.bluetooth.service.BluetoothLeService"
             android:exported="false" />
     </application>
 </manifest>
