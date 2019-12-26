@@ -48,15 +48,17 @@ public abstract class AbsBasePresenter<T extends IBaseView> extends BasePresente
      */
     public void bindLifeCycle(@NonNull final Lifecycle lifecycle) {
         this.mLifecycle = lifecycle;
+        this.mLifecycle.addObserver(this);
     }
 
     @Override
     public void onCreateView() {
-        mLifecycle.addObserver(this);
+       super.onCreateView();
     }
 
     @Override
     public void onDetachView() {
+        super.onDetachView();
         if (mLifecycle != null) {
             mLifecycle.removeObserver(this);
             mLifecycle = null;

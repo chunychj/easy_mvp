@@ -16,7 +16,7 @@ public class BasePresenter implements LifecycleObserver {
 
     private final String TAG = this.getClass().getSimpleName();
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     public void onCreateView() {
         LogUtil.e(TAG, "onResume");
     }
