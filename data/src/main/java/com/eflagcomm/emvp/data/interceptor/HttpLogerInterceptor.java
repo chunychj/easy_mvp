@@ -127,11 +127,11 @@ public final class HttpLogerInterceptor implements Interceptor {
             for (int i = 0, count = headers.size(); i < count; i++) {
                 String name = headers.name(i);
                 if (!"Content-Type".equalsIgnoreCase(name) && !"Content-Length".equalsIgnoreCase(name)) {
-                    headSb.append("\"$name\":").append("\"${headers.value(i)}\",");
+                    headSb.append("\"" + name + "\":").append("\"" + headers.value(i) + "\",");
                 }
             }
-            if(headSb.length() > 0){
-                logger.log("header: { "+ headSb.delete(headSb.length()-1,headSb.length())  + "}");
+            if (headSb.length() > 0) {
+                logger.log("header: { " + headSb.delete(headSb.length() - 1, headSb.length()) + "}");
             }
 
             //判断requestBody不为空，并且请求参数为POST时

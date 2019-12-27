@@ -29,9 +29,9 @@ public class CommonHeaderInterceptor implements Interceptor {
      */
     private Headers getHeads() {
         HashMap<String, String> heads = new HashMap<>();
-//        heads.put("token","");
-//        heads.put("id","");
-//        heads.put("cookie","");
+        heads.put("token","1");
+        heads.put("id","2");
+        heads.put("cookie","3");
         return Headers.of(heads);
     }
 }
