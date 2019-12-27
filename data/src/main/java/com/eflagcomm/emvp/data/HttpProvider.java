@@ -2,9 +2,10 @@ package com.eflagcomm.emvp.data;
 
 import android.content.Context;
 
-import com.eflagcomm.data.interceptor.CommonHeaderInterceptor;
-import com.eflagcomm.data.interceptor.CommonParamInterceptor;
-import com.eflagcomm.data.interceptor.HttpLogerInterceptor;
+
+import com.eflagcomm.emvp.data.interceptor.CommonHeaderInterceptor;
+import com.eflagcomm.emvp.data.interceptor.CommonParamInterceptor;
+import com.eflagcomm.emvp.data.interceptor.HttpLogerInterceptor;
 import com.eflagcomm.emvp.data.utils.SSLUtil;
 
 import org.jetbrains.annotations.NotNull;
